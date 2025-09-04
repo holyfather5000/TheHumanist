@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Tough Times</title>
+<style>
+/* Global Styles */
+body { font-family: 'Arial', sans-serif; margin: 0; background: #f4f4f4; color: #333; }
+a { text-decoration: none; color: #0073e6; }
+a:hover { text-decoration: underline; }
+
+/* Header */
+header { background: #222; color: white; padding: 20px 40px; text-align: center; }
+header h1 { margin: 0; font-size: 2em; }
+header h5 { margin: 5px 0 0 0; font-weight: normal; color: #ccc; }
+
+/* Container */
+.main { max-width: 1000px; margin: 20px auto; padding: 0 20px; }
+
+/* Featured Article */
+.featured { background: white; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; margin-bottom: 20px; }
+.featured img { width: 100%; height: auto; }
+.featured .text { padding: 15px; }
+.featured .text a { font-size: 1.5em; font-weight: bold; }
+.featured .date { color: #555; margin-top: 5px; }
+
+/* News List */
+.news-container { display: flex; flex-direction: column; gap: 15px; }
+.news-item { background: white; border-radius: 6px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); display: flex; gap: 15px; padding: 10px; align-items: flex-start; }
+.news-item img { width: 100px; height: auto; border-radius: 6px; flex-shrink: 0; }
+.news-text { display: flex; flex-direction: column; }
+.news-text a { font-weight: bold; font-size: 1.1em; }
+.news-text .date { font-size: 0.9em; color: #555; margin-top: 5px; }
+
+/* Friendly message */
+.friendly-message { text-align: center; font-size: 1.2em; color: #555; margin-top: 50px; }
+
+/* Responsive */
+@media(max-width: 600px) {
+    .featured .text a { font-size: 1.3em; }
+    .news-item { flex-direction: column; }
+    .news-item img { width: 100%; height: auto; margin-bottom: 10px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>The Tough Times</h1>
+    <h5>It all gets worse. Sorry.</h5>
+</header>
+
+<div class="main">
+    <div id="news-container"></div>
+    <div class="friendly-message" id="friendly-message">Loading news...</div>
+</div>
+
+<script>
+const feedSources = [
+    "https://feeds.bbci.co.uk/news/rss.xml",
+    "https://feedx.net/rss/ap.xml",
+    "https://www.euronews.com/rss",
+    "https://time.com/feed/",
+    "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+    "https://www.cbc.ca/webfeed/rss/rss-topstories",
+    "https://globalnews.ca/feed/",
+    "https://www.aljazeera.com/xml/rss/all.xml",
+    "https://www.npr.org/rss/rss.php?id=1001",
+    "https://reliefweb.int/updates/rss.xml",
+    "https://www.odditycentral.com/feed",
+    "https://www.huffpost.com/section/weird-news/feed"
+];
+
+const keywords = ["disaster","tragedy","crisis","emergency","catastrophe","accident","collision","crash","wreck","derailment","breakdown","failure","collapse","outage","blackout","explosion","blast","bomb","bombing","attack","strike","assault","ambush","invasion","raid","offensive","massacre","slaughter","genocide","killing","murder","homicide","manslaughter","stabbing","shooting","gunfire","crossfire","execution","lynching","assassination","terrorism","terror","extremist","militant","insurgent","hostage","kidnapping","abduction","missing","disappearance","rape","assault","abuse","harassment","bullying","torture","brutality","violence","unrest","riot","protest","coup","rebellion","uprising","insurgency","civil war","war","conflict","battle","fight","skirmish","clash","bloodshed","casualties","death","dead","dying","fatal","fatality","corpses","wounded","injured","hurt","trauma","burns","drowning","suffocation","famine","epidemic","pandemic","outbreak","disease","infection","contamination","pollution","toxin","hazard","risk","danger","crisis"];
+
+async function fetchFeed(url) {
+    try {
+        const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`;
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        return data.items || [];
+    } catch(e) {
+        console.error('Error fetching', url, e);
+        return [];
+    }
+}
+
+async function loadNews() {
+    const container = document.getElementById('news-container');
+    const message = document.getElementById('friendly-message');
+    container.innerHTML = '';
+    let allArticles = [];
+
+    for (const feed of feedSources) {
+        const items = await fetchFeed(feed);
+        allArticles = allArticles.concat(items);
+    }
+
+    allArticles = allArticles.filter(article => 
+        keywords.some(k => article.title.toLowerCase().includes(k))
+    );
+
+    allArticles.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
+    if (allArticles.length === 0) {
+        message.textContent = "No articles found for your keywords.";
+        return;
+    }
+
+    message.style.display = 'none';
+
+    // Show first article as featured
+    const first = allArticles.shift();
+    if(first){
+        const imgSrc = first.thumbnail || first.enclosure?.link || '';
+        const featured = document.createElement('div');
+        featured.className = 'featured';
+        featured.innerHTML = `
+            ${imgSrc ? `<img src="${imgSrc}" alt="${first.title}">` : ''}
+            <div class="text">
+                <a href="${first.link}" target="_blank">${first.title}</a>
+                <span class="date">Published: ${new Date(first.pubDate).toLocaleString()}</span>
+            </div>
+        `;
+        container.appendChild(featured);
+    }
+
+    const newsList = document.createElement('div');
+    newsList.className = 'news-container';
+    container.appendChild(newsList);
+
+    allArticles.forEach(article => {
+        const imgSrc = article.thumbnail || article.enclosure?.link || '';
+        const hasImage = imgSrc !== '';
+
+        const item = document.createElement('div');
+        item.className = 'news-item';
+        item.innerHTML = `
+            ${hasImage ? `<img src="${imgSrc}" alt="${article.title}">` : ''}
+            <div class="news-text">
+                <a href="${article.link}" target="_blank">${article.title}</a>
+                <span class="date">Published: ${new Date(article.pubDate).toLocaleString()}</span>
+            </div>
+        `;
+        newsList.appendChild(item);
+    });
+}
+
+// Initial load
+loadNews();
+setInterval(loadNews, 60 * 60 * 1000); // refresh every hour
+</script>
+
+</body>
+</html>
