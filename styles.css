@@ -49,8 +49,7 @@ h5 {
     margin: 0px;
     padding: 0px;
     display: block;
-    padding: 0; 
-    margin: 0;
+    padding-bottom: 10px; 
     min-width: 300px;
 }
 a {
@@ -60,10 +59,8 @@ a {
 .obser {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1em;
-    letter-spacing: 9px;
+    letter-spacing: 5px;
     font-weight: 300;
-    margin: 0px;
-    padding: 0;
 }
 
 .subby {
@@ -355,10 +352,10 @@ body.stuck-header-active {
 }
 
 .temporary-column {
-    background: #ffffff;
+    /* background-image: url(line.svg); */
     padding: 20px;
     border-radius: 6px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.05);
 }
 
 .h3quake {
