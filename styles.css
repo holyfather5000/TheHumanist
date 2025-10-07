@@ -1,20 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
+/* Global Styles */
+* {
+    box-sizing: border-box;
+}
+
 /* Light Theme Global Styles */
 body {
     font-family: 'Roboto', 'Arial', sans-serif;
-    margin: 50px 0;
+    margin: 25px 0 0 0;
     background: #f8f8f8;
     color: #1a1a1a;
 }
 
 h1 {
     font-family: 'Bodoni Moda', serif;
-    font-size: 4em;
+    font-size: 3.5em;
     font-weight: 700;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     margin: 0;
-    line-height: 0.6;
+    /* padding: 0;
+    line-height: 1; */
 }
 
 h3 {
@@ -37,25 +43,52 @@ h5 {
     font-weight: normal;
     color: #555;
     margin: 0;
+    padding: 0 ;
 }
-
+.imglog {
+    margin: 0px;
+    padding: 0px;
+    display: block;
+    padding: 0; 
+    margin: 0;
+    min-width: 300px;
+}
 a {
     text-decoration: none;
 }
 
 .obser {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 0.3em;
+    font-size: 1em;
     letter-spacing: 9px;
     font-weight: 300;
+    margin: 0px;
+    padding: 0;
 }
+
 .subby {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1em;
     font-weight: 300;
-
+    padding-top: 25px;
 }
 
+/* .gradience {
+    background: linear-gradient(to right, #ff7e5f, #feb47b, #86a8e7, #91eae4);
+    background-size: 200% 200%;
+    animation: gradience 15s ease infinite; 
+} */
+@keyframes gradience {
+  0% {
+    background-position: 0% 50%; /* Starting position */
+  }
+  50% {
+    background-position: 100% 50%; /* Midway position */
+  }
+  100% {
+    background-position: 0% 50%; /* Return to start for a loop */
+  }
+}
 /* Common Text/Meta Styles */
 .meta {
     padding-top: 4px;
@@ -75,8 +108,7 @@ a {
 /* --- Header Styling --- */
 header {
     background: #f8f8f8;
-    color: #1a1a1a;
-    padding: 10px 0;
+    padding: 0px;
     text-align: center;
     border-bottom: 0px solid #ccc;
     transition: padding 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -91,13 +123,21 @@ header {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+
 }
 
 .site-title {
-    font-size: 4em;
-    padding: 10px 0px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 4.5em;
+    padding: 0;
     transition: padding-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+h1.site-title {
+    background: url("https://holyfather5000.github.io/RoughDay/neon.jpg");
+    background-position: bottom;
+    background-clip: text;
+    color: transparent;
 }
 
 header.stuck .site-title {
@@ -109,7 +149,7 @@ header.stuck {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 15px 0 5px 0;
+    padding: 10px 0 5px 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     background-color: #f8f8f8;
     color: #363636;
@@ -117,13 +157,88 @@ header.stuck {
     border-bottom: 1px #363636;
     z-index: 2000;
 }
-
 header.stuck .header-content {
     transform: scale(0.8);
 }
-
 body.stuck-header-active {
-    margin-top: 190px;
+    margin-top: 150px;
+}
+
+.foot {
+    background: #1a1a1a;
+    color: #f8f8f8;
+    padding: 40px 0px 10px 0px;
+    margin: 120px 0 0px 0;
+    width: 100%;
+}
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+}
+.footer-site-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px; /* This controls the space between the title and obser */
+}
+.footer-site-title {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.8em;
+    font-weight: 800;
+    color: #f8f8f8;
+    margin: 0;
+}
+.footer-site-info .obser {
+    font-size: 0.8em;
+    letter-spacing: 5px;
+    color: #999;
+    margin: 0;
+}
+.footer-contact {
+    display: flex;
+    flex-direction: row; /* Changed to row for a horizontal layout */
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 40px;
+    margin-right: 200px;
+    text-align: center;
+}
+.contact-label {
+    font-weight: bold;
+    color: #ccc;
+    font-size: 0.6em;
+    margin-top:12px;
+}
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    text-align: left;
+}
+
+.footer-contact p {
+    margin: 0;
+    color: #ccc;
+    font-size: 0.9em;
+}
+.footer-contact a {
+    color: #84e9ff;
+    text-decoration: none;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+    font-weight: 800;
+}
+.footer-copyright {
+    text-align: center;
+    margin-top: 100px;
+}
+.footer-copyright p {
+    margin: 0;
+    font-size: 0.8em;
+    color: #999;
 }
 
 /* --- Main Layout --- */
@@ -144,7 +259,7 @@ body.stuck-header-active {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
     gap: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
 .custom-featured {
@@ -246,15 +361,17 @@ body.stuck-header-active {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.temporary-column h3 {
-    font-family: 'Bodoni Moda', serif;
-    font-size: 1.8em;
-    border-bottom: 2px solid #ccc;
-    padding-bottom: 10px;
-    margin-top: 0;
+.h3quake {
+    font-family: 'Roboto', 'Arial', sans-serif;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #4b4b4b;
+    white-space: nowrap;
+    border-radius: 3px;
 }
-
 /* --- Earthquake List Styles --- */
+
+
 .temporary-column ul {
     list-style-type: none;
     padding: 0;
@@ -281,6 +398,7 @@ body.stuck-header-active {
 }
 .quake-time { 
     font-size: smaller;
+    opacity: 0.7;
 }
 
 /* --- Main Articles (3-column grid) --- */
@@ -461,23 +579,32 @@ body.stuck-header-active {
     font-size: 1em;
     margin-bottom: 20px;
    }
+    body.stuck-header-active {
+    margin-top: 120px;
+}
    .site-title {
-    font-size: 3.2em;
+    font-size: 3.6em;
     white-space: nowrap;
-}
-.stuck .header-content .site-title {
-    font-size: 2.5em;
-    margin: 10px 0 0 0;
-    padding: 0 0 5px 0;
-}
+    }
+    .obser {
+        text-align: center;
+        padding-bottom: 0px;
+    }
+    .stuck .header-content .site-title {
+        font-size: 2.7em;
+        margin: 0px 0 3px 0;
+        padding: 0px 0 3px 0;
+    }
     .featured-layout {
         grid-template-columns: 1fr;
     }
-
-    .temporary-column {
-        display: none;
+    .temporary-column, .custom-featured, .featured-small-articles {
+        width: 100%;
+        margin-bottom: 20px;
     }
-
+    .temporary-column {
+        order: 4; /* This will place the earthquake column at the bottom */
+    }
     #main-articles-row,
     #secondary-articles-grid,
     #secondary-articles-grid-2 {
@@ -497,7 +624,43 @@ body.stuck-header-active {
         box-shadow: 0 2px 2px rgba(0, 0, 0, 0.02);
     }
     .header-content {
-        transform: scale(0.8);
+        transform: scale(0.9);
     }
-
+    .foot {
+        padding: 40px 0px 30px 0px;
+    }
+    .footer-site-info {
+        align-items: center;
+    }
+    .footer-site-title {
+        letter-spacing: 3px;
+        font-weight: 300;
+    }
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        text-decoration: none;
+    }
+    .footer-contact {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 0px;
+        text-decoration: none;
+    }
+    .contact-label {
+        display: none;
+    }
+    .contact-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .contact-details p {
+        font-size: 0.7em;
+        margin-top: 50px;
+    }
 }
