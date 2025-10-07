@@ -11,13 +11,13 @@ const NewsApp = {
             "https://globalnews.ca/feed/",
             "https://www.aljazeera.com/xml/rss/all.xml",
             "https://www.npr.org/rss/rss.php?id=1001",
-            "https://reliefweb.int/updates/rss.xml",
+            // "https://reliefweb.int/updates/rss.xml",
             "https://www.odditycentral.com/feed",
             "https://www.huffpost.com/section/weird-news/feed"
         ],
         earthquakeFeed: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson",
-        keywords: ["disaster", "tragedy", "crisis", "emergency", "catastrophe", "accident", "collision", "crash", "wreck", "derailment", "failure", "collapse", "explosion", "bomb", "attack", "massacre", "shooting", "terrorism", "riot", "war", "conflict", "death", "injured", "epidemic", "pandemic", "outbreak", "disease", "pollution", "danger", "killed in deadly"],
-        blockedKeywords: ["netflix series", "hulu", "disney+", "prime video", "streaming", "tv show", "spoilers", "movie review", "tobacco", "celebrity gossip", "album release", "video game", "gaming console", "Twisty Ending", "Update #", "Years after", "seasonal monitor", "Iraq: ISHM", "Annunciation", "lauded", "situation report", "summary report", "canoe trip", "3W Mapping"],
+        keywords: ["disaster", "tragedy", "crisis", "emergency", "catastrophe", "accident", "collision", "crash", "wreck", "derailment", "failure", "collapse", "explosion", "bomb", "attack", "massacre", "shooting", "terrorism", "riot", "war", "conflict", "death", "injured", "epidemic", "pandemic", "outbreak", "disease", "pollution", "danger", "killed in deadly",],
+        blockedKeywords: ["netflix series", "Assessment", "hulu", "disney+", "prime video", "streaming", "tv show", "spoilers", "movie review", "tobacco", "celebrity gossip", "album release", "video game", "gaming console", "Twisty Ending", "Update #", "Years after", "seasonal monitor", "Iraq: ISHM", "Annunciation", "lauded", "situation report", "summary report", "canoe trip", "3W Mapping", "Locust Bulletin", "Flash Update", "Howard Stern", "Country Brief", "Apple's iPhone", "Apple has unveiled"],
         fallbackImages: [
             'newsfb/F1.jpg',
             'newsfb/F2.jpg',
@@ -83,6 +83,25 @@ const NewsApp = {
             if (!placed) remaining.shift();
         }
         return result;
+    },
+    
+    // Limits the number of articles from a specific source
+    limitSourceArticles(articles, sourceDomain, maxCount) {
+        const limitedArticles = [];
+        let sourceCount = 0;
+        
+        for (const article of articles) {
+            const { domain } = this.getDomainInfo(article.link);
+            if (domain.includes(sourceDomain)) {
+                if (sourceCount < maxCount) {
+                    limitedArticles.push(article);
+                    sourceCount++;
+                }
+            } else {
+                limitedArticles.push(article);
+            }
+        }
+        return limitedArticles;
     },
 
     // --- Rendering Functions ---
@@ -170,7 +189,7 @@ const NewsApp = {
         // Column for earthquakes on the right
         const earthquakeColumn = document.createElement('div');
         earthquakeColumn.className = 'temporary-column';
-        let earthquakeListHTML = `<h3>Earthquakes Today</h3><br>`;
+        let earthquakeListHTML = `<span class="h3quake">Earthquakes Today</span><br><br>`;
 
         // Sort earthquakes by magnitude in descending order and get the top 5
         const displayQuakes = earthquakes.sort((a, b) => b.properties.mag - a.properties.mag).slice(0, 5);
@@ -265,25 +284,26 @@ const NewsApp = {
     // --- Utility Functions ---
     formatTimeAgo(dateString) {
         const pubDate = new Date(dateString);
-        const diffInMinutes = Math.floor((new Date() - pubDate) / 60000);
+        const now = new Date();
+        const diffInMinutes = Math.floor((now - pubDate) / 60000);
         
-        // 0 to 29 minutes
-        if (diffInMinutes >= 0 && diffInMinutes <= 29) {
+        // Show "Just now" for articles published within the last 20 minutes
+        if (diffInMinutes <= 20) {
             return "Just now";
         } 
-        // 30 to 59 minutes
-        else if (diffInMinutes >= 30 && diffInMinutes <= 59) {
+        // Show "X mins ago" for articles published 21-59 minutes ago
+        else if (diffInMinutes >= 21 && diffInMinutes <= 59) {
             return `${diffInMinutes} mins ago`;
         }
         
         const diffInHours = Math.floor(diffInMinutes / 60);
 
-        // 1 to 24 hours
-        if (diffInHours >= 1 && diffInHours <= 24) {
-            return `${diffInHours} hr${diffInHours === 1 ? '' : 's'} ago`;
+        // Show "X hours ago" for articles published 1-23 hours ago
+        if (diffInHours >= 1 && diffInHours <= 23) {
+            return `${diffInHours} hour${diffInHours === 1 ? '' : 's'} ago`;
         }
         
-        // Anything older than 24 hours will still show the month and day.
+        // For anything older than 24 hours, show the month and day
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         return `${months[pubDate.getMonth()]} ${pubDate.getDate()}`;
     },
@@ -340,6 +360,8 @@ const NewsApp = {
         try {
             let allArticles = await this.fetchAllFeeds();
             let filteredArticles = this.filterArticles(allArticles);
+            // Limit "reliefweb" articles to a maximum of 2
+            filteredArticles = this.limitSourceArticles(filteredArticles, 'reliefweb.int', 2);
             filteredArticles.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
             filteredArticles = this.mixArticlesBySource(filteredArticles, 3);
             if (filteredArticles.length === 0) {
