@@ -19,8 +19,6 @@ h1 {
     font-weight: 700;
     letter-spacing: 2px;
     margin: 0;
-    /* padding: 0;
-    line-height: 1; */
 }
 
 h3 {
@@ -47,7 +45,7 @@ h5 {
 }
 .imglog {
     margin: 0px;
-    padding: 0px;
+    padding-top: 20px;
     display: block;
     padding-bottom: 20px;
     min-width: 300px;
@@ -55,17 +53,20 @@ h5 {
 a {
     text-decoration: none;
 }
-
 .obser {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1em;
     letter-spacing: 5px;
     font-weight: 300;
+    background-image: url(neon.jpg);
+    transform: rotate(-1deg);
     background-color: #777;
     padding: 5px 15px 5px 15px;
     color: #f8f8f8;
 }
-
+header .obser {
+    display: inline-block; 
+}
 .subby {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1em;
@@ -73,11 +74,6 @@ a {
     padding-top: 25px;
 }
 
-/* .gradience {
-    background: linear-gradient(to right, #ff7e5f, #feb47b, #86a8e7, #91eae4);
-    background-size: 200% 200%;
-    animation: gradience 15s ease infinite; 
-} */
 @keyframes gradience {
   0% {
     background-position: 0% 50%; /* Starting position */
@@ -133,13 +129,6 @@ header {
     transition: padding-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-h1.site-title {
-    background: url("https://holyfather5000.github.io/RoughDay/neon.jpg");
-    background-position: bottom;
-    background-clip: text;
-    color: transparent;
-}
-
 header.stuck .site-title {
     padding-top: 0px;
 }
@@ -149,7 +138,7 @@ header.stuck {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 10px 0 5px 0;
+    padding: 0px 0 5px 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     background-color: #f8f8f8;
     color: #363636;
@@ -161,7 +150,7 @@ header.stuck .header-content {
     transform: scale(0.8);
 }
 body.stuck-header-active {
-    margin-top: 150px;
+    margin-top: 160px;
 }
 
 .foot {
@@ -170,6 +159,9 @@ body.stuck-header-active {
     padding: 40px 0px 10px 0px;
     margin: 120px 0 0px 0;
     width: 100%;
+}
+.foot .obser {
+    display: none;
 }
 .footer-content {
     display: flex;
@@ -203,7 +195,7 @@ body.stuck-header-active {
     align-items: flex-start;
     gap: 20px;
     margin-top: 40px;
-    margin-right: 200px;
+    margin-right: 140px;
     text-align: center;
 }
 .contact-label {
@@ -217,6 +209,7 @@ body.stuck-header-active {
     flex-direction: column;
     align-items: left;
     text-align: left;
+    font-size: large;
 }
 
 .footer-contact p {
@@ -230,10 +223,11 @@ body.stuck-header-active {
     font-size: 0.9em;
     letter-spacing: 1px;
     font-weight: 800;
+    margin-top: -20px;
 }
 .footer-copyright {
     text-align: center;
-    margin-top: 100px;
+    margin-top: 40px;
 }
 .footer-copyright p {
     margin: 0;
@@ -572,7 +566,8 @@ body.stuck-header-active {
 
 /* --- Responsive Styles --- */
 @media (max-width: 768px) {
-   body {
+   
+   main {
     padding: 0 5% 0 5%;
    }
    h5 {
@@ -580,7 +575,7 @@ body.stuck-header-active {
     margin-bottom: 20px;
    }
     body.stuck-header-active {
-    margin-top: 120px;
+    margin-top: 100px;
 }
    .site-title {
     font-size: 3.6em;
@@ -588,13 +583,16 @@ body.stuck-header-active {
     }
     .obser {
         text-align: center;
-        padding: 0px 5px;
-        color: #333;
-        background-color: transparent;;
+        padding: 6px 10px 0px 10px;
+        transform: rotate(-0.5deg);
+        color: #444;
+        background-color: transparent;
+        background: none;
     }
     .imglog {
         margin-bottom: 2px;
         padding-bottom: 4px;
+        padding-top: 0;
     }
     .stuck .header-content .site-title {
         font-size: 2.7em;
@@ -652,8 +650,7 @@ body.stuck-header-active {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        margin-top: 20px;
-        margin-bottom: 0px;
+        margin: 50px 0 0 0;
         text-decoration: none;
     }
     .contact-label {
@@ -666,7 +663,6 @@ body.stuck-header-active {
         text-align: center;
     }
     .contact-details p {
-        font-size: 0.7em;
-        margin-top: 50px;
+        display: none;
     }
 }
